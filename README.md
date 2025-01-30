@@ -31,6 +31,7 @@ The API runs on port 4000 by default. The application uses a **PostgreSQL** data
 - **NestJS**: A framework for building efficient, reliable, and scalable server-side applications using Node.js.
 - **TypeORM**: A TypeScript-based ORM for handling interactions with the database.
 - **PostgreSQL**: A relational database used to store movie data.
+- **dotenv**: For managing environment variables (such as API URLs).
 
 
 ## Installation
