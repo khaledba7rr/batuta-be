@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException, ConflictException } from '@nestjs/common';
 import axios from 'axios';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -44,4 +44,41 @@ export class MovieService {
     }
 
   }
+
+  async saveFavoriteMovie(movieData: Partial<Movie>): Promise<Movie> {
+
+    const title = movieData.title;
+
+    const movieExist = await this.movieRepository.findOne({ where: { title } });
+
+    if(movieExist){
+      throw new ConflictException('Movie already exists');
+    }
+
+    const newMovie = this.movieRepository.create(movieData);
+    return this.movieRepository.save(newMovie);
+  }
+
+  async getAllFavoriteMovies(): Promise<Movie[]> {
+    return this.movieRepository.find();
+  }
+
+  async getIsFavoriteMovie(title: string): Promise<Boolean> {
+    const movie = await this.movieRepository.findOne({ where: { title } });
+
+    if (!movie) {
+      return false;
+    }
+
+    return true;
+  }
+
+   async deleteFavoriteMovie(id: number): Promise<void> {
+    const movie = await this.movieRepository.findOne({ where: { id } });
+    if (!movie) {
+      throw new NotFoundException('Movie not found');
+    }
+    await this.movieRepository.remove(movie);
+  }
+
 }
