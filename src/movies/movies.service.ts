@@ -15,7 +15,7 @@ export class MovieService {
 
   // Fetch list of movies by search query
   async searchMovies(query: string): Promise<Movie[]> {
-
+    
     const response = await axios.get(`http://www.omdbapi.com/?s=${query}&apikey=${this.omdbApiKey}`);
     const data = response.data;
 
@@ -30,8 +30,6 @@ export class MovieService {
           movie.year = movieData.Year;
           movie.poster = movieData.Poster;
 
-          // const savedMovie = await this.movieRepository.save(movie);
-
           movies.push(movie);
         }
 
@@ -40,7 +38,7 @@ export class MovieService {
         throw new Error('Movies not found');
       }
     } catch (error) {
-      throw new Error("THIS IS AN ERROR !");
+      throw new Error(error.message);
     }
 
   }
